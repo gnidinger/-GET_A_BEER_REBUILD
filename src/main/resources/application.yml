@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: local
+    include: 'security'
+  main:
+    web-application-type: reactive
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: getABeer
