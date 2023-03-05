@@ -1,7 +1,7 @@
 spring:
   profiles:
     active: local
-    include: 'security'
+    include: 'oauth'
   main:
     web-application-type: reactive
   data:
@@ -9,3 +9,15 @@ spring:
       host: localhost
       port: 27017
       database: getABeer
+
+springbootwebfluxjjwt:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      key-length: 256
+
+jwt:
+  secret-key: temporary1111getabeerrebuild1111temporary1111getabeerrebuild
+  access-token-expiration-minutes: 120
+  refresh-token-expiration-minutes: 1440
