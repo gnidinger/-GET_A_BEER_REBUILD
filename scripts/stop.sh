@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/app"
+PROJECT_ROOT="/home/ubuntu/action"
 JAR_FILE="$PROJECT_ROOT/get-a-beer-rebuild.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
