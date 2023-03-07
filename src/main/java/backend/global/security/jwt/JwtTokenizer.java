@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import backend.global.security.entity.AuthUser;
+import backend.domain.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -21,7 +21,9 @@ public class JwtTokenizer {
 	@Value("${jwt.secret-key}")
 	private String secret;
 	@Value("${jwt.access-token-expiration-minutes}")
-	private String expirationTime;
+	private String accessTokenExpirationTime;
+	@Value("${jwt.refresh-token-expiration-minutes}")
+	private String refreshTokenExpirationMinutes;
 	private Key key;
 
 	@PostConstruct
@@ -29,20 +31,41 @@ public class JwtTokenizer {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 	}
 
-	public String generateToken(AuthUser authUser) {
+	public String delegateAccessToken(User user) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", authUser.getRoles());
-		return doGenerateToken(claims, authUser.getUsername());
+		claims.put("email", user.getEmail());
+		claims.put("role", user.getRoles());
+		return generateAccessToken(claims, user.getEmail());
 	}
 
-	private String doGenerateToken(Map<String, Object> claims, String username) {
-		Long expirationTimeLong = Long.parseLong(expirationTime); //in minutes
+	public String delegateRefreshToken(User user) {
+		String subject = user.getEmail();
+		return generateRefreshToken(subject);
+	}
+
+	private String generateAccessToken(Map<String, Object> claims, String subject) {
+
+		Long expirationTimeLong = Long.parseLong(accessTokenExpirationTime); //in second
 		final Date createdDate = new Date();
 		final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);
 
 		return Jwts.builder()
 			.setClaims(claims)
-			.setSubject(username)
+			.setSubject(subject)
+			.setIssuedAt(createdDate)
+			.setExpiration(expirationDate)
+			.signWith(key)
+			.compact();
+	}
+
+	private String generateRefreshToken(String subject) {
+
+		Long expirationTimeLong = Long.parseLong(refreshTokenExpirationMinutes); //in second
+		final Date createdDate = new Date();
+		final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);
+
+		return Jwts.builder()
+			.setSubject(subject)
 			.setIssuedAt(createdDate)
 			.setExpiration(expirationDate)
 			.signWith(key)
@@ -53,6 +76,15 @@ public class JwtTokenizer {
 		return !isTokenExpired(token);
 	}
 
+	private Boolean isTokenExpired(String token) {
+		final Date expiration = getExpirationDateFromToken(token);
+		return expiration.before(new Date());
+	}
+
+	public Date getExpirationDateFromToken(String token) {
+		return getAllClaimsFromToken(token).getExpiration();
+	}
+
 	public Claims getAllClaimsFromToken(String token) {
 		return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 	}
@@ -61,12 +93,4 @@ public class JwtTokenizer {
 		return getAllClaimsFromToken(token).getSubject();
 	}
 
-	public Date getExpirationDateFromToken(String token) {
-		return getAllClaimsFromToken(token).getExpiration();
-	}
-
-	private Boolean isTokenExpired(String token) {
-		final Date expiration = getExpirationDateFromToken(token);
-		return expiration.before(new Date());
-	}
 }

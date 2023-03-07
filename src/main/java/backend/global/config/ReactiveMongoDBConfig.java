@@ -13,7 +13,7 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
-@EnableReactiveMongoRepositories(basePackages = "com.example.webflux.**.repository",
+@EnableReactiveMongoRepositories(basePackages = "backend.**.repository",
 	reactiveMongoTemplateRef = "reactiveMongoTemplate")
 // reactiveMongoTemplateRef = "getABeerReactiveMongoTemplate")
 @RequiredArgsConstructor

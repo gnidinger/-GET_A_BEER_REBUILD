@@ -32,7 +32,7 @@ public class CustomSecurityContextRepository implements ServerSecurityContextRep
 		return Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION))
 			.filter(authHeader -> authHeader.startsWith("Bearer"))
 			.flatMap(authHeader -> {
-				String authToken = authHeader.substring(7);
+				String authToken = authHeader.substring(14);
 				Authentication authentication = new UsernamePasswordAuthenticationToken(authToken, authToken);
 				return this.customAuthenticationManager.authenticate(authentication).map(SecurityContextImpl::new);
 			});

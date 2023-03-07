@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import backend.domain.user.entity.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class AuthUser implements UserDetails {
 	private String genderType;
 	private String ageType;
 	@Setter
-	private List<UserRole> roles;
+	private List<Role> roles;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

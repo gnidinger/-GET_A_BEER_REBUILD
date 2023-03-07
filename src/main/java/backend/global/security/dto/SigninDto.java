@@ -30,9 +30,9 @@ public class SigninDto {
 	@AllArgsConstructor
 	public static class Response {
 
-		// private String id;
-		// private String email;
-		// private String nickname;
-		private String token;
+		private String id;
+		private String email;
+		private String nickname;
+		// private String token;
 	}
 }

@@ -38,7 +38,8 @@ public class ReactiveSecurityConfig {
 			.securityContextRepository(customSecurityContextRepository)
 			.authorizeExchange()
 			.pathMatchers(HttpMethod.OPTIONS).permitAll()
-			.pathMatchers("/login").permitAll()
+			.pathMatchers("/signin").permitAll()
+			// .anyExchange().permitAll()
 			.anyExchange().authenticated()
 			.and()
 			.build();
