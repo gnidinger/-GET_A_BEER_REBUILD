@@ -1,7 +1,6 @@
 package backend.global.security.service;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.springframework.http.ResponseCookie;
@@ -14,7 +13,6 @@ import backend.global.exception.BusinessLogicException;
 import backend.global.exception.ExceptionCode;
 import backend.global.redis.repository.ReactiveRedisTokenRepository;
 import backend.global.security.cookieManager.CookieManager;
-import backend.global.security.dto.SigninDto;
 import backend.global.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
@@ -34,7 +32,7 @@ public class RefreshTokenService {
 
 		Stream<String> stream = Arrays.stream(cookies)
 			.map(cookie -> cookie.replace(" ", ""))
-			.filter(c -> c.startsWith('[' +"refreshToken"));
+			.filter(c -> c.startsWith('[' + "refreshToken"));
 
 		String value = stream.reduce((first, second) -> second)
 			.map(v -> v.replace('[' + "refreshToken=", ""))

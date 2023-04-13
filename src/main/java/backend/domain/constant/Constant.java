@@ -10,7 +10,7 @@ import java.util.Set;
 public class Constant {
 	public static final Set<String> BEER_CATEGORY_SET =
 		new HashSet<>(List.of(
-			"ALE", "IPA", "LAGER", "WEIZEN", "WEISSBIER", "HEFEWEIZEN",
+			"ALE", "IPA", "LAGER", "WEIZEN", "WEISSBIER", "HEFEWEIZEN", "GOSE",
 			"DUNKEL", "STOUT", "PILSENER", "LAMBIC", "FRUIT", "NON_ALCOHOLIC", "ETC"));
 
 	public static final Set<String> BEER_TAG_SET =
@@ -34,7 +34,7 @@ public class Constant {
 
 	public static final Set<String> AGE_TYPE_SET =
 		new LinkedHashSet<>(List.of(
-			"TEENAGER", "TWENTIES","THIRTIES", "FORTIES",
+			"TEENAGER", "TWENTIES", "THIRTIES", "FORTIES",
 			"FIFTY", "OVER", "OTHERS", "NONE"
 		));
 

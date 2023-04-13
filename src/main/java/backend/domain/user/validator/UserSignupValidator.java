@@ -8,9 +8,19 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import backend.domain.user.dto.UserRequestDto;
+import backend.domain.user.repository.UserRepository;
+import backend.domain.user.service.UserService;
+import backend.global.exception.BusinessLogicException;
+import backend.global.exception.ExceptionCode;
+import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
 @Component
+@RequiredArgsConstructor
 public class UserSignupValidator implements Validator {
+
+	private final UserService userService;
+	private final UserRepository userRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -33,11 +43,17 @@ public class UserSignupValidator implements Validator {
 		if (!Pattern.matches(emailPattern, targetUserDto.getEmail())) {
 			errors.rejectValue("email", "EMAIL_NOT_VALID", "Email Is Not Valid");
 		}
+		if (!userService.findUserByEmail(targetUserDto.getEmail()).isDisposed()) {
+			errors.rejectValue("email", "EMAIL_EXIST", "사용중인 이메일 입니다.");
+		}
 		if (!Pattern.matches(passwordPattern, targetUserDto.getPassword())) {
 			errors.rejectValue("password", "PASSWORD_NOT_VALID", "비밀번호는 8자 이상 특수문자와 영어 대소문자, 숫자만 허용됩니다.");
 		}
 		if (!Pattern.matches(nicknamePattern, targetUserDto.getNickname())) {
-			errors.rejectValue("nickname", "NICKNAME_NOT_VALID", "닉네임은 숫자, 영어, 한국어와 언더스코어만 허용됩니다.");
+			errors.rejectValue("nickname", "NICKNAME_NOT_VALID", "닉네임은 2-8 자리의 숫자, 영어, 한국어와 언더스코어만 허용됩니다.");
+		}
+		if (!userService.findUserByNickname(targetUserDto.getNickname()).isDisposed()) {
+			errors.rejectValue("nickname", "NICKNAME_EXIST", "사용중인 닉네임 입니다.");
 		}
 	}
 }

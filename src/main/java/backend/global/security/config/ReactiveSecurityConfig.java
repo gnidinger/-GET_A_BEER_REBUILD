@@ -11,7 +11,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import backend.global.security.manager.CustomAuthenticationManager;
 import backend.global.security.repository.CustomSecurityContextRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
@@ -39,8 +38,9 @@ public class ReactiveSecurityConfig {
 			.authorizeExchange()
 			.pathMatchers(HttpMethod.OPTIONS).permitAll()
 			.pathMatchers("/signin").permitAll()
-			// .anyExchange().permitAll()
-			.anyExchange().authenticated()
+			.pathMatchers("/users/signup").permitAll()
+			.anyExchange().permitAll()
+			// .anyExchange().authenticated()
 			.and()
 			.build();
 	}

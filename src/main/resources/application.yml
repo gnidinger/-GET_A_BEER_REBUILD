@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: GetABeer_REBUILD
   profiles:
     active: local
     include: 'oauth'
@@ -12,6 +14,15 @@ spring:
   redis:
     host: localhost
     port: 6379
+  jackson:
+    time-zone: Asia/Seoul
+  rsocket:
+    server:
+      transport: tcp
+      port: 7070
+    client:
+      transport: tcp
+      address: rsocket://localhost:7070
 
 server:
   port: 8080
@@ -31,6 +42,12 @@ springbootwebfluxjjwt:
       secret: mysecret
       iteration: 33
       key-length: 256
+
+userId:
+  admin: admin
+mail:
+  address:
+    admin: admin@gmail.com
 
 jwt:
   secret-key: ThisIsSecretKeyForJWTForGetABeerREBUILDWithHS512SignatureAlgorithm

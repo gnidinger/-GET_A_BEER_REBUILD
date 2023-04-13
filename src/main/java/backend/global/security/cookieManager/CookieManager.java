@@ -31,7 +31,12 @@ public class CookieManager {
 	}
 
 	public String outCookie(ServerWebExchange serverWebExchange, String key) {
-		String[] cookies = serverWebExchange.getRequest().getHeaders().get("Cookie").toString().split(";");
+		String[] cookies = serverWebExchange
+			.getRequest()
+			.getHeaders()
+			.get("Cookie")
+			.toString()
+			.split(";");
 		Stream<String> stream = Arrays.stream(cookies)
 			.map(cookie -> cookie.replace(" ", ""))
 			.filter(c -> c.startsWith('[' + key));

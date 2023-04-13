@@ -26,6 +26,7 @@ public class UserRequestDto {
 			return User.builder()
 				.email(this.email)
 				.nickname(this.nickname)
+				.roles(List.of("ROLE_USER"))
 				.password(passwordEncoder.encode(this.password))
 				.build();
 		}
@@ -35,7 +36,7 @@ public class UserRequestDto {
 	@Builder
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	@AllArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class FirstSignIn {
+	public static class FirstSigninRequest {
 
 		private String genderType;
 		private String ageType;
